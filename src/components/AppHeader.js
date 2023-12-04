@@ -60,6 +60,11 @@ const AppHeader = () => {
               Project Awaiting Approval
             </CNavLink>
           </CNavItem>
+          <CNavItem>
+            <CNavLink to="/accountManager" component={NavLink}>
+              Account Manager
+            </CNavLink>
+          </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">
           <AppHeaderDropdown />

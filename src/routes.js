@@ -10,6 +10,9 @@ const ProjectAwaitingApproval = React.lazy(() =>
 const Lecturer = React.lazy(() => import('./views/Admin/lecturer/Lecturer'))
 const Student = React.lazy(() => import('./views/Admin/student/Student'))
 const ProjectDetail = React.lazy(() => import('./views/User/projectDetail/ProjectDetail'))
+const StudentDetail = React.lazy(() => import('./views/Admin/studentDetail/StudentDetail'))
+const LecturerDetail = React.lazy(() => import('./views/Admin/lecturerDetail/LecturerDetail'))
+const AccountManager = React.lazy(() => import('./views/Admin/accountManager/AccountManager'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -62,6 +65,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: '', element: Topic },
   { path: '/topic', name: 'Topic', element: Topic },
+  { path: '/accountManager', name: 'AccountManager', element: AccountManager },
   { path: '/projectRegistered', name: 'ProjectRegistered', element: ProjectRegistered },
   {
     path: '/projectAwaitingApproval',
@@ -71,6 +75,8 @@ const routes = [
   { path: '/lecturer', name: 'Lecturer', element: Lecturer },
   { path: '/student', name: 'Student', element: Student },
   { path: '/projectDetail/:id', name: 'ProjectDetail', element: ProjectDetail },
+  { path: '/studentDetail/:id', name: 'StudentDetail', element: StudentDetail },
+  { path: '/lecturerDetail/:id', name: 'LecturerDetail', element: LecturerDetail },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

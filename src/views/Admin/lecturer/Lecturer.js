@@ -1,20 +1,39 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CSmartTable } from '@coreui/react-pro'
-import { CCardBody, CButton, CCollapse, CAvatar } from '@coreui/react'
+import {
+  CCardBody,
+  CButton,
+  CCollapse,
+  CRow,
+  CCol,
+  CFormInput,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CInputGroup,
+} from '@coreui/react'
+import { Link } from 'react-router-dom'
+import readXlsxFile from 'read-excel-file'
+import * as instructorService from '../../../apiServices/instructorServices'
 
 const Lecturer = () => {
   const [details, setDetails] = useState([])
+  const [lecturer, setLecturer] = useState([])
+  const [items, setItems] = useState([])
+  const [visibleXL, setVisibleXL] = useState(false)
   const columns = [
     {
-      key: 'id',
+      key: 'instructorId',
       label: '',
       filter: false,
       sorter: true,
       _style: { width: '3%' },
     },
     {
-      key: 'name',
+      key: 'iName',
+      label: 'Name',
       _style: { width: '20%' },
       sorter: false,
     },
@@ -30,7 +49,7 @@ const Lecturer = () => {
       sorter: false,
     },
     {
-      key: 'hometown',
+      key: 'homeTown',
       _style: { width: '10%' },
       sorter: false,
     },
@@ -47,7 +66,7 @@ const Lecturer = () => {
       sorter: false,
     },
     {
-      key: 'phonenumber',
+      key: 'phoneNumber',
       _style: { width: '1%' },
       filter: false,
       sorter: false,
@@ -57,6 +76,12 @@ const Lecturer = () => {
       _style: { width: '8%' },
     },
     {
+      key: 'accountId',
+      _style: { width: '8%' },
+      sorter: false,
+      filter: false,
+    },
+    {
       key: 'show_details',
       label: '',
       _style: { width: '1%' },
@@ -64,173 +89,39 @@ const Lecturer = () => {
       sorter: false,
     },
   ]
-  const usersData = [
-    {
-      id: 1,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'adc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 2,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'adc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 3,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'Inadc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 4,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'Padc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 5,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'adc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 6,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'adc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 7,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'adc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 8,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'Inadc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 9,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'Padc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 10,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'adc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 11,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'adc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 12,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'adc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 13,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'Inadc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 14,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'Padc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-    {
-      id: 15,
-      name: 'Trần Anh Dũng',
-      gender: 'Male',
-      birth: '01/01/1999',
-      hometown: 'Tp.HCM',
-      address: 'xxx-yyy-zzz',
-      email: 'adc@uit.edu.vn',
-      phonenumber: '0987654321',
-      degree: 'Thạc sĩ',
-    },
-  ]
+  useEffect(() => {
+    const fetchApi = async () => {
+      const result = await instructorService.getInstructor()
+      setLecturer(result)
+    }
+    fetchApi()
+  }, [])
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0]
+    const rows = await readXlsxFile(file)
+    const headers = rows[0]
+    const data = rows.slice(1).map((row) => {
+      return headers.reduce((obj, header, index) => {
+        obj[header] = row[index]
+        return obj
+      }, {})
+    })
+    setItems(data)
+  }
+  const addTopics = () => {
+    const fetchApi = async () => {
+      var promises = []
+      for (var i = 0; i < items.length; i++) {
+        const result = await instructorService.createInstructor(items[i])
+        const result1 = await instructorService.getInstructor()
+        promises.push(result)
+        setLecturer(result1)
+      }
+      setItems(null)
+      Promise.all(promises)
+    }
+    fetchApi()
+  }
   const toggleDetails = (index) => {
     const position = details.indexOf(index)
     let newDetails = details.slice()
@@ -244,14 +135,90 @@ const Lecturer = () => {
   return (
     <div>
       <div className="gap-2 d-md-flex justify-content-md-end">
-        <CButton color="info">Add from Excel</CButton>
+        <CButton onClick={() => setVisibleXL(!visibleXL)}>Add from Excel</CButton>
+        <CModal
+          size="xl"
+          visible={visibleXL}
+          onClose={() => setVisibleXL(false)}
+          aria-labelledby="OptionalSizesExample1"
+        >
+          <CModalHeader>
+            <CModalTitle id="OptionalSizesExample1">List of topics</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <div className="gap-2 d-md-flex justify-content-md-end">
+              <CRow>
+                <CCol sm={12}>
+                  <CFormInput type="file" onChange={handleFileUpload} />
+                </CCol>
+              </CRow>
+            </div>
+            <CSmartTable
+              columns={columns}
+              columnFilter
+              columnSorter
+              items={items}
+              itemsPerPageSelect
+              onFilteredItemsChange={(items) => {}}
+              onSelectedItemsChange={(items) => {}}
+              scopedColumns={{
+                show_details: (item) => {
+                  return (
+                    <td className="py-2">
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        shape="square"
+                        size="sm"
+                        onClick={() => {
+                          toggleDetails(item.instructorId)
+                        }}
+                      >
+                        {details.includes(item.instructorId) ? 'Hide' : 'Show'}
+                      </CButton>
+                    </td>
+                  )
+                },
+                details: (item) => {
+                  return (
+                    <CCollapse visible={details.includes(item.instructorId)}>
+                      <CCardBody className="p-3">
+                        <CButton size="sm" color="info">
+                          User Settings
+                        </CButton>
+                        <CButton size="sm" color="danger" className="ml-1">
+                          Delete
+                        </CButton>
+                      </CCardBody>
+                    </CCollapse>
+                  )
+                },
+              }}
+              selectable
+              sorterValue={{ column: 'status', state: 'asc' }}
+              tableProps={{
+                className: 'add-this-class',
+                responsive: true,
+                striped: true,
+              }}
+              tableBodyProps={{
+                className: 'align-middle',
+              }}
+            />
+            <div className="gap-2 d-md-flex justify-content-md-end">
+              <CButton color="info" onClick={addTopics}>
+                Save
+              </CButton>
+            </div>
+          </CModalBody>
+        </CModal>
       </div>
       <CSmartTable
         activePage={2}
         columns={columns}
         columnFilter
         columnSorter
-        items={usersData}
+        items={lecturer}
         itemsPerPageSelect
         itemsPerPage={20}
         pagination
@@ -262,11 +229,6 @@ const Lecturer = () => {
           console.log(items)
         }}
         scopedColumns={{
-          avatar: (item) => (
-            <td>
-              <CAvatar src={`/images/avatars/${item.avatar}`} />
-            </td>
-          ),
           show_details: (item) => {
             return (
               <td className="py-2">
@@ -276,26 +238,24 @@ const Lecturer = () => {
                   shape="square"
                   size="sm"
                   onClick={() => {
-                    toggleDetails(item.id)
+                    toggleDetails(item.instructorId)
                   }}
                 >
-                  {details.includes(item.id) ? 'Hide' : 'Show'}
+                  {details.includes(item.instructorId) ? 'Hide' : 'Show'}
                 </CButton>
               </td>
             )
           },
           details: (item) => {
             return (
-              <CCollapse visible={details.includes(item.id)}>
+              <CCollapse visible={details.includes(item.instructorId)}>
                 <CCardBody className="p-3">
-                  <h4>{item.username}</h4>
-                  <p className="text-muted">User since: {item.name}</p>
-                  <CButton size="sm" color="info">
-                    User Settings
-                  </CButton>
-                  <CButton size="sm" color="danger" className="ml-1">
-                    Delete
-                  </CButton>
+                  <CInputGroup className="mb-3">
+                    <Link to={`/lecturerDetail/${item.instructorId}`}>
+                      {/* Use the CoreUI button component */}
+                      <CButton color="primary">More detail</CButton>
+                    </Link>
+                  </CInputGroup>
                 </CCardBody>
               </CCollapse>
             )

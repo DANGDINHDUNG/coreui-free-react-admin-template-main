@@ -11,10 +11,7 @@ import {
   CCol,
   CContainer,
   CFormCheck,
-  CInputGroup,
-  CFormLabel,
   CFormInput,
-  CInputGroupText,
   CModal,
   CModalHeader,
   CModalTitle,
@@ -26,6 +23,8 @@ const Topic = () => {
   const [items, setItems] = useState([])
   const [topic, setTopic] = useState([])
   const [visibleXL, setVisibleXL] = useState(false)
+  const [isChecked1, setIsChecked1] = useState(false)
+  const [isChecked2, setIsChecked2] = useState(false)
   const columns = [
     {
       key: 'topicId',
@@ -53,6 +52,12 @@ const Topic = () => {
       _style: { width: '10%' },
     },
     {
+      key: 'subjectId',
+      sorter: false,
+      filter: false,
+      _style: { width: '10%' },
+    },
+    {
       key: 'show_details',
       label: '',
       _style: { width: '1%' },
@@ -70,6 +75,14 @@ const Topic = () => {
     }
     setDetails(newDetails)
   }
+  const deleteTopic = (index) => {
+    const fetchApi = async () => {
+      const result = await topicServices.deleteTopic(index)
+      const result1 = await topicServices.getTopic()
+      setTopic(result1)
+    }
+    fetchApi()
+  }
   const handleFileUpload = async (event) => {
     const file = event.target.files[0]
     const rows = await readXlsxFile(file)
@@ -81,15 +94,41 @@ const Topic = () => {
       }, {})
     })
     setItems(data)
-    console.log(data)
   }
-  const handleClick = () => {
-    setTopic(items)
+  const addTopics = () => {
+    const fetchApi = async () => {
+      var promises = []
+      for (var i = 0; i < items.length; i++) {
+        const result = await topicServices.createTopic(items[i])
+        const result1 = await topicServices.getTopic()
+        promises.push(result)
+        setTopic(result1)
+      }
+      setItems(null)
+      Promise.all(promises)
+    }
+    fetchApi()
+  }
+  const subjectFilter = (index) => {
+    const fetchApi = async () => {
+      const result = await topicServices.getTopicbySubject(index)
+      setTopic(result)
+    }
+    getChecked(index)
+    fetchApi()
+  }
+  const getChecked = (index) => {
+    if (index === 1) {
+      setIsChecked1(!isChecked1)
+      setIsChecked2(isChecked1) // Set the second checkbox based on the first checkbox
+    } else if (index === 2) {
+      setIsChecked2(!isChecked2)
+      setIsChecked1(isChecked2) // Set the first checkbox based on the second checkbox
+    }
   }
   useEffect(() => {
     const fetchApi = async () => {
       const result = await topicServices.getTopic()
-      console.log(result)
       setTopic(result)
     }
     fetchApi()
@@ -103,18 +142,25 @@ const Topic = () => {
               button={{ color: 'success', variant: 'outline' }}
               type="radio"
               name="options-outlined"
-              id="success-outlined"
+              id="1"
+              checked={isChecked1}
               autoComplete="off"
               label="Project 1"
-              defaultChecked
+              onChange={() => {
+                subjectFilter(1)
+              }}
             />
             <CFormCheck
               button={{ color: 'danger', variant: 'outline' }}
               type="radio"
               name="options-outlined"
-              id="danger-outlined"
+              id="2"
+              checked={isChecked2}
               autoComplete="off"
               label="Project 2"
+              onChange={() => {
+                subjectFilter(2)
+              }}
             />
           </CCol>
           <CCol sm={4}>
@@ -155,20 +201,20 @@ const Topic = () => {
                               shape="square"
                               size="sm"
                               onClick={() => {
-                                toggleDetails(item.index)
+                                toggleDetails(item.topicId)
                               }}
                             >
-                              {details.includes(item.id) ? 'Hide' : 'Show'}
+                              {details.includes(item.topicId) ? 'Hide' : 'Show'}
                             </CButton>
                           </td>
                         )
                       },
                       details: (item) => {
                         return (
-                          <CCollapse visible={details.includes(item.id)}>
+                          <CCollapse visible={details.includes(item.topicId)}>
                             <CCardBody className="p-3">
-                              <h4>{item.name}</h4>
-                              <p className="text-muted">User since: ${item.name}</p>
+                              <h4>{item.topicName}</h4>
+                              <p className="text-muted">User since: ${item.topicName}</p>
                               <CButton size="sm" color="info">
                                 User Settings
                               </CButton>
@@ -192,7 +238,7 @@ const Topic = () => {
                     }}
                   />
                   <div className="gap-2 d-md-flex justify-content-md-end">
-                    <CButton color="info" onClick={handleClick}>
+                    <CButton color="info" onClick={addTopics}>
                       Save
                     </CButton>
                   </div>
@@ -209,14 +255,8 @@ const Topic = () => {
         columnSorter
         items={topic}
         itemsPerPageSelect
-        itemsPerPage={20}
+        itemsPerPage={50}
         pagination
-        onFilteredItemsChange={(items) => {
-          console.log(items)
-        }}
-        onSelectedItemsChange={(items) => {
-          console.log(items)
-        }}
         scopedColumns={{
           name: (item) => <td style={{ fontWeight: 'bold' }}>{item.name}</td>,
           show_details: (item) => {
@@ -241,13 +281,21 @@ const Topic = () => {
               <CCollapse visible={details.includes(item.topicId)}>
                 <CCardBody className="p-3">
                   <h4>{item.topicName}</h4>
-                  <p className="text-muted">User since: {item.topicName}</p>
-                  <CButton size="sm" color="info">
-                    User Settings
-                  </CButton>
-                  <CButton size="sm" color="danger" className="ml-1">
-                    Delete
-                  </CButton>
+                  <div className="gap-2 d-md-flex justify-content-md-end">
+                    <CButton size="sm" color="info">
+                      Topic Settings
+                    </CButton>
+                    <CButton
+                      size="sm"
+                      color="danger"
+                      className="ml-1"
+                      onClick={() => {
+                        deleteTopic(item.topicId)
+                      }}
+                    >
+                      Delete
+                    </CButton>
+                  </div>
                 </CCardBody>
               </CCollapse>
             )

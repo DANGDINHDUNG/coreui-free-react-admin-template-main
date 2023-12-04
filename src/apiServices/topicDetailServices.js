@@ -1,8 +1,8 @@
 import request from '../utils/request'
 
-export const getTopic = async () => {
+export const getTopicDetail = async () => {
   try {
-    const response = await request.get('/Topic/GetAll')
+    const response = await request.get('/TopicDetail/GetAll')
     // Success 🎉
     console.log(response)
     return response.data
@@ -19,10 +19,10 @@ export const getTopic = async () => {
     console.log(error)
   }
 }
-export const createTopic = async (topic) => {
+export const createTopicDetail = async (topicDetail) => {
   try {
-    const response = await request.post('/Topic/AddTopic', topic)
-    console.log(topic)
+    const response = await request.post('/TopicDetail/AddTopicDetail', topicDetail)
+    console.log(topicDetail)
     return response.data
   } catch (error) {
     if (error.response) {
@@ -37,9 +37,9 @@ export const createTopic = async (topic) => {
     console.log(error)
   }
 }
-export const getTopicbyID = async (id) => {
+export const getTopicDetailbyID = async (id) => {
   try {
-    const response = await request.get(`/Topic/GetTopicsByID/${id}`)
+    const response = await request.get(`/TopicDetail/GetTopicDetailByID/${id}`)
     console.log(response)
     return response.data
   } catch (error) {
@@ -55,9 +55,9 @@ export const getTopicbyID = async (id) => {
     console.log(error)
   }
 }
-export const getTopicbyName = async (name) => {
+export const getTopicDetailbytagID = async (id) => {
   try {
-    const response = await request.get(`/Topic/GetTopicsByName/${name}`)
+    const response = await request.get(`/TopicDetail/GetTopicDetailByTag/${id}`)
     console.log(response)
     return response.data
   } catch (error) {
@@ -73,10 +73,10 @@ export const getTopicbyName = async (name) => {
     console.log(error)
   }
 }
-export const getTopicbySubject = async (id) => {
+export const updateTopicDetail = async (id, topicDetail) => {
   try {
-    const response = await request.get(`/Topic/GetTopicsBySubject/${id}`)
-    console.log(response)
+    const response = await request.put(`/TopicDetail/UpdateTopicDetail/${id}`, topicDetail)
+    console.log(topicDetail)
     return response.data
   } catch (error) {
     if (error.response) {
@@ -91,27 +91,9 @@ export const getTopicbySubject = async (id) => {
     console.log(error)
   }
 }
-export const updateTopic = async (id, topic) => {
+export const deleteTopicDetail = async (id) => {
   try {
-    const response = await request.put(`/Topic/PutTopic/${id}`, topic)
-    console.log(topic)
-    return response.data
-  } catch (error) {
-    if (error.response) {
-      console.log(error.response.data)
-      console.log(error.response.status)
-      console.log(error.response.headers)
-    } else if (error.request) {
-      console.log(error.request)
-    } else {
-      console.log('Error', error.message)
-    }
-    console.log(error)
-  }
-}
-export const deleteTopic = async (id) => {
-  try {
-    const response = await request.delete(`/Topic/DeleteTopic/${id}`)
+    const response = await request.delete(`/TopicDetail/DeleteTopicDetail/${id}`)
     return response.data
   } catch (error) {
     if (error.response) {
