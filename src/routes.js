@@ -17,10 +17,11 @@ const Tag = React.lazy(() => import('./views/Admin/tag/Tag'))
 const PersonalInfoPage = React.lazy(() => import('./views/User/personalInfoPage/PersonalInfoPage'))
 const LecturerInfoPage = React.lazy(() => import('./views/User/lecturerInfoPage/LecturerInfoPage'))
 const Project = React.lazy(() => import('./views/User/project/Project'))
+const Login = React.lazy(() => import('./view/pages/login/Login'))
 // Icons
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
 const routes = [
-  { path: '/', exact: true, name: '', element: Topic },
+  { path: '/', exact: true, name: '', element: Login },
   { path: '/topic', name: 'Topic', element: Topic },
   { path: '/accountManager', name: 'AccountManager', element: AccountManager },
   { path: '/projectRegistered', name: 'ProjectRegistered', element: ProjectRegistered },
