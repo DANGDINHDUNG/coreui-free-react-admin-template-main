@@ -21,17 +21,13 @@ const ProjectAwaitingApproval = () => {
   const columns = [
     {
       key: 'id',
+      label: '',
       filter: false,
-      _style: { width: '5%' },
+      _style: { width: '3%' },
     },
     {
       key: 'name',
       _style: { width: '40%' },
-    },
-    {
-      key: 'request',
-      filter: false,
-      sorter: false,
     },
     {
       key: 'description',
@@ -40,6 +36,14 @@ const ProjectAwaitingApproval = () => {
     },
     {
       key: 'lecturer',
+      sorter: false,
+    },
+    {
+      key: 'student_1',
+      sorter: false,
+    },
+    {
+      key: 'student_2',
       sorter: false,
     },
     {
@@ -57,6 +61,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -65,6 +74,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -74,6 +88,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -82,6 +101,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Unregistered',
     },
     {
@@ -90,6 +114,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -98,6 +127,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -106,6 +140,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Đinh Nguyễn Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -114,6 +153,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -122,6 +166,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -130,6 +179,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -138,6 +192,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -146,6 +205,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -154,6 +218,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -162,6 +231,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
     {
@@ -170,6 +244,11 @@ const ProjectAwaitingApproval = () => {
       request: 'Yêu thích lập trình Web',
       lecturer: 'Trần Anh Dũng',
       description: 'Project 1',
+      student_1: 'Nguyễn Huỳnh Gia Huy',
+      student_2: 'Nguyễn Gia Bảo',
+      semester: 1,
+      year: 2023,
+      point: 10,
       status: 'Registered',
     },
   ]
@@ -217,6 +296,7 @@ const ProjectAwaitingApproval = () => {
         itemsPerPageSelect
         itemsPerPage={20}
         pagination
+        selectable
         onFilteredItemsChange={(items) => {
           console.log(items)
         }}
@@ -237,46 +317,12 @@ const ProjectAwaitingApproval = () => {
                     toggleDetails(item.id)
                   }}
                 >
-                  {details.includes(item.id) ? 'Hide' : 'Show'}
+                  Accept
                 </CButton>
               </td>
             )
           },
-          details: (item) => {
-            return (
-              <CCollapse visible={details.includes(item.id)}>
-                <CCardBody className="p-3">
-                  <CFormLabel htmlFor="basic-url">Participating students</CFormLabel>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText id="basic-addon1">Student 1</CInputGroupText>
-                    <CFormInput
-                      placeholder="Student 1"
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                      readOnly
-                    />
-                    <CInputGroupText id="basic-addon1">Student 2</CInputGroupText>
-                    <CFormInput
-                      placeholder="Student 2"
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                      readOnly
-                    />
-                  </CInputGroup>
-
-                  <CFormLabel htmlFor="basic-url">Project</CFormLabel>
-                  <CInputGroup className="mb-3">
-                    <Link to={`/projectDetail/${item.id}`}>
-                      {/* Use the CoreUI button component */}
-                      <CButton color="primary">More detail</CButton>
-                    </Link>
-                  </CInputGroup>
-                </CCardBody>
-              </CCollapse>
-            )
-          },
         }}
-        selectable
         sorterValue={{ column: 'status', state: 'asc' }}
         tableProps={{
           className: 'add-this-class',

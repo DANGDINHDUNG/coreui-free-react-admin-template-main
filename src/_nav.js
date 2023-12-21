@@ -55,6 +55,30 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Tag',
+    to: '/tag',
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Personal Info',
+    to: '/personalInfoPage',
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Personal Info',
+    to: '/lecturerInfoPage',
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Project',
+    to: '/project',
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Docs',
     href: 'https://coreui.io/react/docs/templates/installation/',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,

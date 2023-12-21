@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { CSmartTable } from '@coreui/react-pro'
 import readXlsxFile from 'read-excel-file'
-import * as topicServices from '../../../apiServices/topicServices'
+import * as tagServices from '../../../apiServices/tagServices'
 import {
   CCardBody,
   CButton,
@@ -24,32 +24,27 @@ import {
   CDropdown,
 } from '@coreui/react'
 
-const AccountManager = () => {
+const Tag = () => {
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
-  const [topic, setTopic] = useState([])
+  const [tag, setTag] = useState([])
   const [visibleXL, setVisibleXL] = useState(false)
   const [visibleSm, setVisibleSm] = useState(false)
-  const [selectedValue, setSelectedValue] = useState(null)
+  const [comboBoxValue, setComboBoxValue] = useState('')
   const columns = [
     {
-      key: 'accountId',
+      key: 'tagId',
       label: 'Id',
       filter: false,
       _style: { width: '5%' },
     },
     {
-      key: 'email',
+      key: 'tagName',
       _style: { width: '40%' },
+      filter: true,
     },
     {
-      key: 'pwd',
-      label: 'Password',
-      filter: false,
-      sorter: false,
-    },
-    {
-      key: 'accountTypeId',
+      key: 'description',
       filter: false,
       sorter: false,
     },
@@ -59,26 +54,6 @@ const AccountManager = () => {
       _style: { width: '1%' },
       filter: false,
       sorter: false,
-    },
-  ]
-  const accountData = [
-    {
-      accountId: '1',
-      email: '20520544@gm.uit.edu.vn',
-      pwd: '123',
-      accountTypeId: '2',
-    },
-    {
-      accountId: '2',
-      email: '20520406@gm.uit.edu.vn',
-      pwd: '123',
-      accountTypeId: '2',
-    },
-    {
-      accountId: '3',
-      email: 'dungta@gm.uit.edu.vn',
-      pwd: '123',
-      accountTypeId: '1',
     },
   ]
   const toggleDetails = (index) => {
@@ -91,16 +66,17 @@ const AccountManager = () => {
     }
     setDetails(newDetails)
   }
+  const handleComboBoxChange = (newValue) => {
+    // Update state when comboBox value changes
+    setComboBoxValue(newValue)
+  }
   const deleteTopic = (index) => {
     const fetchApi = async () => {
-      const result = await topicServices.deleteTopic(index)
-      const result1 = await topicServices.getTopic()
-      setTopic(result1)
+      const result = await tagServices.deleteTag(index)
+      const result1 = await tagServices.getTag()
+      setTag(result1)
     }
     fetchApi()
-  }
-  const handleItemClick = (value) => {
-    setSelectedValue(value)
   }
   const handleFileUpload = async (event) => {
     const file = event.target.files[0]
@@ -118,10 +94,10 @@ const AccountManager = () => {
     const fetchApi = async () => {
       var promises = []
       for (var i = 0; i < items.length; i++) {
-        const result = await topicServices.createTopic(items[i])
-        const result1 = await topicServices.getTopic()
+        const result = await tagServices.createTag(items[i])
+        const result1 = await tagServices.getTag()
         promises.push(result)
-        setTopic(result1)
+        setTag(result1)
       }
       setItems(null)
       Promise.all(promises)
@@ -130,8 +106,8 @@ const AccountManager = () => {
   }
   useEffect(() => {
     const fetchApi = async () => {
-      const result = await topicServices.getTopic()
-      setTopic(result)
+      const result = await tagServices.getTag()
+      setTag(result)
     }
     fetchApi()
   }, [])
@@ -146,7 +122,7 @@ const AccountManager = () => {
           aria-labelledby="OptionalSizesExample1"
         >
           <CModalHeader>
-            <CModalTitle id="OptionalSizesExample1">List of topics</CModalTitle>
+            <CModalTitle id="OptionalSizesExample1">List of tags</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <div className="gap-2 d-md-flex justify-content-md-end">
@@ -213,7 +189,7 @@ const AccountManager = () => {
             </div>
           </CModalBody>
         </CModal>
-        <CButton onClick={() => setVisibleSm(!visibleSm)}>Add an account</CButton>
+        <CButton onClick={() => setVisibleSm(!visibleSm)}>Add a tag</CButton>
         <CModal
           size="sm"
           visible={visibleSm}
@@ -221,35 +197,24 @@ const AccountManager = () => {
           aria-labelledby="OptionalSizesExample1"
         >
           <CModalHeader>
-            <CModalTitle id="OptionalSizesExample1">Account Information</CModalTitle>
+            <CModalTitle id="OptionalSizesExample1">Tag</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CInputGroup className="mb-3">
-              <CInputGroupText id="addon-wrapping">Email</CInputGroupText>
+              <CInputGroupText id="addon-wrapping">Tag Name</CInputGroupText>
               <CFormInput
-                placeholder="Username"
+                placeholder="Web"
                 aria-label="Username"
                 aria-describedby="addon-wrapping"
               />
             </CInputGroup>
             <CInputGroup className="mb-3">
-              <CInputGroupText id="addon-wrapping">Password</CInputGroupText>
+              <CInputGroupText id="addon-wrapping">Description</CInputGroupText>
               <CFormInput
-                type="password"
-                placeholder="Username"
+                placeholder="Ứng dụng website"
                 aria-label="Username"
                 aria-describedby="addon-wrapping"
               />
-            </CInputGroup>
-            <CInputGroup className="mb-3">
-              <CDropdown>
-                <CDropdownToggle color="info">Type</CDropdownToggle>
-                <CDropdownMenu>
-                  <CDropdownItem onClick={() => handleItemClick('1')}>Lecturer</CDropdownItem>
-                  <CDropdownItem onClick={() => handleItemClick('2')}>Student</CDropdownItem>
-                </CDropdownMenu>
-              </CDropdown>
-              <CFormInput aria-label="Text input with dropdown button" value={selectedValue} />
             </CInputGroup>
             <div className="gap-2 d-md-flex justify-content-md-end">
               <CButton color="info" onClick={addTopics}>
@@ -264,12 +229,8 @@ const AccountManager = () => {
         columns={columns}
         columnFilter
         columnSorter
-        items={accountData}
-        itemsPerPageSelect
-        itemsPerPage={50}
-        pagination
+        items={tag}
         scopedColumns={{
-          name: (item) => <td style={{ fontWeight: 'bold' }}>{item.name}</td>,
           show_details: (item) => {
             return (
               <td className="py-2">
@@ -279,18 +240,19 @@ const AccountManager = () => {
                   shape="square"
                   size="sm"
                   onClick={() => {
-                    toggleDetails(item.accountId)
+                    toggleDetails(item.tagId)
                   }}
                 >
-                  {details.includes(item.accountId) ? 'Hide' : 'Show'}
+                  {details.includes(item.tagId) ? 'Hide' : 'Show'}
                 </CButton>
               </td>
             )
           },
           details: (item) => {
             return (
-              <CCollapse visible={details.includes(item.accountId)}>
+              <CCollapse visible={details.includes(item.tagId)}>
                 <CCardBody className="p-3">
+                  <h4>{item.tagName}</h4>
                   <div className="gap-2 d-md-flex justify-content-md-end">
                     <CButton size="sm" color="info">
                       Topic Settings
@@ -300,7 +262,7 @@ const AccountManager = () => {
                       color="danger"
                       className="ml-1"
                       onClick={() => {
-                        deleteTopic(item.topicId)
+                        deleteTopic(item.tagId)
                       }}
                     >
                       Delete
@@ -311,7 +273,6 @@ const AccountManager = () => {
             )
           },
         }}
-        selectable
         sorterValue={{ column: 'status', state: 'asc' }}
         tableProps={{
           className: 'add-this-class',
@@ -326,4 +287,4 @@ const AccountManager = () => {
   )
 }
 
-export default AccountManager
+export default Tag

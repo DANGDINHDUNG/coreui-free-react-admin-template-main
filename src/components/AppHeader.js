@@ -65,6 +65,26 @@ const AppHeader = () => {
               Account Manager
             </CNavLink>
           </CNavItem>
+          <CNavItem>
+            <CNavLink to="/tag" component={NavLink}>
+              Tag
+            </CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink to="/personalInfoPage" component={NavLink}>
+              Personal Info
+            </CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink to="/lecturerInfoPage" component={NavLink}>
+              Personal Info
+            </CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink to="/project" component={NavLink}>
+              Project
+            </CNavLink>
+          </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">
           <AppHeaderDropdown />
