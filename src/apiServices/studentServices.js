@@ -19,6 +19,7 @@ export const getStudent = async () => {
     console.log(error)
   }
 }
+
 export const createStudent = async (student) => {
   try {
     const response = await request.post('/Student/AddStudent', student)
@@ -55,6 +56,26 @@ export const getStudentbyID = async (id) => {
     console.log(error)
   }
 }
+
+export const CheckStudentID = async (id) => {
+  try {
+    const response = await request.get(`/Student/CheckStudentID/${id}`)
+    console.log(response)
+    return response.data
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.data)
+      console.log(error.response.status)
+      console.log(error.response.headers)
+    } else if (error.request) {
+      console.log(error.request)
+    } else {
+      console.log('Error', error.message)
+    }
+    console.log(error)
+  }
+}
+
 export const updateStudent = async (id, student) => {
   try {
     const response = await request.put(`/Student/UpdateStudent/${id}`, student)

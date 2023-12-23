@@ -15,18 +15,23 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import * as userServices from '../../../apiServices/userServices'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import * as accountServices from '../../../apiServices/accountServices'
 const Login = () => {
   const [user, setUser] = useState([])
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchApi = async () => {
-      const result = await userServices.getUser()
+      const result = await accountServices.getAccount()
       console.log(result)
       setUser(result)
     }
     fetchApi()
   }, [])
+  const login = () => {
+    navigate('/Topic');
+  }
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -56,7 +61,7 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" className="mt-3" active tabIndex={-1} onClick={() => {login()}}>
                           Login
                         </CButton>
                       </CCol>
@@ -72,16 +77,11 @@ const Login = () => {
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <h2>Sign up</h2>
+                    <h2>Đăng ký đồ án</h2>
                     <p>
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                       tempor incididunt ut labore et dolore magna aliqua.
                     </p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Register Now!
-                      </CButton>
-                    </Link>
                   </div>
                 </CCardBody>
               </CCard>

@@ -1,6 +1,11 @@
 import React from 'react'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { CSmartTable } from '@coreui/react-pro'
+import * as topicRegisterServices from '../../../apiServices/topicRegisterServices'
+import * as topicServices from '../../../apiServices/topicServices'
+import * as studentServices from '../../../apiServices/studentServices'
+import * as projectServices from '../../../apiServices/projectServices'
+
 import {
   CCardBody,
   CButton,
@@ -25,10 +30,115 @@ import {
   CToaster,
 } from '@coreui/react'
 
+var topicRegister = {
+  registerId: '0',
+  topicId: '',
+  student1Id: '',
+  student2Id: '',
+  status: '',
+};
+
+var project = {
+  projectId: 0,
+  projectName: '',
+  request: '',
+  description: '',
+  point: '',
+  semester: '',
+  year: '',
+  student1Id: '',
+  student2Id: '',
+  instructorId: '',
+  subjectId: '',
+  status: ''
+}
+
+var mailData = {
+  EmailToName: '',
+  EmailSubject: '',
+  EmailBody: '',
+};
+
 const Project = () => {
   const [details, setDetails] = useState([])
   const [toast, addToast] = useState(0)
+  const [topic, setTopic] = useState([])
+  const [code1, setInputValue1] = useState('')
+  const [code2, setInputValue2] = useState('')
+  const [isChecked1, setIsChecked1] = useState(false)
+  const [isChecked2, setIsChecked2] = useState(false)
   const toaster = useRef()
+
+  const addTopicRegister = (topicID, topicName, request, description, instructorId, subjectId) => {
+    topicRegister.student1Id = document.getElementById('studentCode1').value
+    topicRegister.student2Id = document.getElementById('studentCode2').value
+    topicRegister.topicId = topicID
+
+    project.projectName = topicName
+    project.request = request
+    project.description = description
+    project.point = 0
+    project.student1Id = document.getElementById('studentCode1').value
+    project.student2Id = document.getElementById('studentCode2').value
+    project.instructorId = instructorId
+    project.subjectId = subjectId
+    project.status = 'In progress'
+    const day = new Date();
+    project.year = day.getFullYear()
+    
+    if (day.getMonth() < 1 || day.getMonth() > 8) {
+      project.semester = '1'
+    }
+    else if (day.getMonth() >= 1 && day.getMonth() <= 7 ) {
+      project.semester = '2'
+    } 
+    else project.semester = '3'
+
+    //console.log(topicID)
+    const fetchApi = async () => {
+      const check1 = await studentServices.CheckStudentID(document.getElementById('studentCode1').value)
+      const check2 = await studentServices.CheckStudentID(document.getElementById('studentCode2').value)
+
+      if (check1 === false) {
+        alert("Student's code 1 doesn't exist");
+        return;
+      }
+
+      if (check2 === false) {
+        alert("Student's code 2 doesn't exist");
+        return;
+      }
+
+      topicRegister.status = await topicRegisterServices.GetTopicStatus(topicID)
+      //console.log(topicRegister)
+      const result = await topicRegisterServices.createTopicRegister(topicRegister)
+      // console.log(result)
+
+      // getMailData(topicName, topicRegister.student1Id, topicRegister.status);
+      // //console.log(mailData)
+      // const result1 = await topicRegisterServices.sendStatusMail(mailData)
+      // //console.log(result1)
+
+      // getMailData(topicName, topicRegister.student2Id, topicRegister.status);
+      // //console.log(mailData)
+      // const result2 = await topicRegisterServices.sendStatusMail(mailData)
+      // //console.log(result2)
+
+      if (topicRegister.status === 'approved')
+      {
+        const projectResult = await projectServices.createProject(project)
+        console.log(projectResult)
+      }
+    }
+    fetchApi()
+    console.log(topicRegister);
+  }
+
+  const getMailData = (topicName, studentID, status) => {
+    mailData.EmailToName = studentID + '@gm.uit.edu.vn'
+    mailData.EmailSubject = 'Topic registrant ' + status + '!';
+    mailData.EmailBody = '<b>Your registrant to topic [ ' + topicName + ' ] has been ' + status + '!</b>';
+  }
 
   const columns = [
     {
@@ -70,121 +180,46 @@ const Project = () => {
       sorter: false,
     },
   ]
-  const usersData = [
-    {
-      id: 1,
-      topic: 'Ứng dụng đi chợ trực tuyến tích hợp gợi ý món ăn',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 1,
-      subject: 1,
-    },
-    {
-      id: 2,
-      topic: 'Ứng dụng đi chợ trực tuyến',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 1,
-      subject: 1,
-    },
-    {
-      id: 3,
-      topic: 'Ứng dụng đi chợ trực tuyến tích hợp gợi ý món ăn',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 1,
-      subject: 1,
-    },
-    {
-      id: 4,
-      topic: 'Ứng dụng đi chợ trực tuyến tích hợp gợi ý món ănus',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 1,
-      subject: 1,
-    },
-    {
-      id: 5,
-      topic: 'Ứng dụng đi chợ trực tuyến tích hợp gợi ý món ăn',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 1,
-      subject: 1,
-    },
-    {
-      id: 6,
-      topic: 'Ứng dụng đi chợ trực tuyến tích hợp gợi ý món ănu',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 1,
-      subject: 1,
-    },
-    {
-      id: 7,
-      topic: 'Ứng dụng đi chợ trực tuyến tích hợp gợi ý món ăn',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 2,
-      subject: 1,
-    },
-    {
-      id: 8,
-      topic: 'Ứng dụng đi chợ trực tuyến tích hợp gợi ý món ăn',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 1,
-      subject: 1,
-    },
-    {
-      id: 9,
-      topic: 'Ứng dụng đi chợ trực tuyến tích hợp gợi ý món ăn',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 1,
-      subject: 1,
-    },
-    {
-      id: 10,
-      topic: 'Ứng dụng đi chợ trực tuyến tích hợp gợi ý món ănš',
-      request: 'Yêu thích lập trình Web',
-      description: 'Project 1',
-      instructor: 1,
-      subject: 1,
-    },
-  ]
-  const studentCode = [
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 4,
-    },
-    {
-      id: 5,
-    },
-    {
-      id: 6,
-    },
-    {
-      id: 7,
-    },
-    {
-      id: 8,
-    },
-    {
-      id: 9,
-    },
-    {
-      id: 10,
-    },
-  ]
+  useEffect(() => {
+    const fetchApi = async () => {
+      const result = await topicServices.getTopic()
+      setTopic(result)
+    }
+    fetchApi()
+  }, [])
 
+  // Quy định số chữ số của Student's code
+  const handleChange1 = (e) => {
+    const value = e.target.value
+    // Limiting to 10 characters in this example
+    if (value.length <= 8) {
+      setInputValue1(value)
+    }
+  }
+  const handleChange2 = (e) => {
+    const value = e.target.value
+    // Limiting to 10 characters in this example
+    if (value.length <= 8) {
+      setInputValue2(value)
+    }
+  }
+  const subjectFilter = (index) => {
+    const fetchApi = async () => {
+      const result = await topicServices.getTopicbySubject(index)
+      setTopic(result)
+    }
+    getChecked(index)
+    fetchApi()
+  }
+  const getChecked = (index) => {
+    if (index === 1) {
+      setIsChecked1(!isChecked1)
+      setIsChecked2(isChecked1) // Set the second checkbox based on the first checkbox
+    } else if (index === 2) {
+      setIsChecked2(!isChecked2)
+      setIsChecked1(isChecked2) // Set the first checkbox based on the second checkbox
+    }
+  }
   const toggleDetails = (index) => {
     const position = details.indexOf(index)
     let newDetails = details.slice()
@@ -221,23 +256,30 @@ const Project = () => {
     <div>
       <CContainer>
         <CRow>
-          <CCol sm={8}>
+        <CCol sm={8}>
             <CFormCheck
               button={{ color: 'success', variant: 'outline' }}
               type="radio"
               name="options-outlined"
-              id="success-outlined"
+              id="1"
+              checked={isChecked1}
               autoComplete="off"
               label="Project 1"
-              defaultChecked
+              onChange={() => {
+                subjectFilter(1)
+              }}
             />
             <CFormCheck
               button={{ color: 'danger', variant: 'outline' }}
               type="radio"
               name="options-outlined"
-              id="danger-outlined"
+              id="2"
+              checked={isChecked2}
               autoComplete="off"
               label="Project 2"
+              onChange={() => {
+                subjectFilter(2)
+              }}
             />
           </CCol>
         </CRow>
@@ -248,7 +290,7 @@ const Project = () => {
         columns={columns}
         columnFilter
         columnSorter
-        items={usersData}
+        items={topic}
         itemsPerPageSelect
         itemsPerPage={20}
         pagination
@@ -262,60 +304,55 @@ const Project = () => {
           name: (item) => <td style={{ fontWeight: 'bold' }}>{item.name}</td>,
           show_details: (item) => {
             return (
-              <td className="py-2">
+              1==1 ? (
+                <td className="py-2">
                 <CButton
                   color="primary"
                   variant="outline"
                   shape="square"
                   size="sm"
+                  disabled
                   onClick={() => {
-                    toggleDetails(item.id)
+                    toggleDetails(item.topicId)
                   }}
                 >
-                  {details.includes(item.id) ? 'Hide' : 'Show'}
+                  {details.includes(item.topicId) ? 'Hide' : 'Show'}
                 </CButton>
               </td>
+              ) : (
+                <></>
+              )              
             )
           },
           details: (item) => {
             return (
-              <CCollapse visible={details.includes(item.id)}>
+              <CCollapse visible={details.includes(item.topicId)}>
                 <CCardBody className="p-3">
                   <CFormLabel htmlFor="basic-url">Student&apos;s informations</CFormLabel>
                   <CInputGroup className="mb-3">
                     <CInputGroupText id="basic-addon1">Student&apos;s code 1:</CInputGroupText>
-                    <CFormSelect
-                      placeholder="Student 2"
-                      type="comboBox"
+                    <CFormInput
+                      placeholder="Student 1"
+                      type="number"
+                      value={code1}
+                      onChange={handleChange1}
                       aria-label="Username"
                       aria-describedby="basic-addon1"
                       id="studentCode1"
-                    >
-                      <option value="">Please select</option>
-                      {studentCode.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.id}
-                        </option>
-                      ))}
-                    </CFormSelect>
+                    />
                     <CInputGroupText id="basic-addon1">Student&apos;s code 2:</CInputGroupText>
-                    <CFormSelect
+                    <CFormInput
                       placeholder="Student 2"
-                      type="comboBox"
+                      type="number"
+                      value={code2}
+                      onChange={handleChange2}
                       aria-label="Username"
                       aria-describedby="basic-addon1"
                       id="studentCode2"
-                    >
-                      <option value="">Please select</option>
-                      {studentCode.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.id}
-                        </option>
-                      ))}
-                    </CFormSelect>
+                    />
                   </CInputGroup>
                   <div className="gap-2 d-md-flex justify-content-md-end">
-                    <CButton size="sm" color="info" onClick={() => addToast(exampleToast)}>
+                    <CButton size="sm" color="info" onClick={() => addTopicRegister(item.topicId, item.topicName, item.request, item.description, item.instructorId, item.subjectId)}>
                       Register
                     </CButton>
                     <CToaster ref={toaster} push={toast} placement="top-end" />

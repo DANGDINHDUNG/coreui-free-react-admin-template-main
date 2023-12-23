@@ -1,4 +1,5 @@
 import React from 'react'
+import Login from './views/pages/login/Login'
 
 const Topic = React.lazy(() => import('./views/Admin/topic/Topic'))
 const ProjectRegistered = React.lazy(() =>
@@ -20,7 +21,6 @@ const Project = React.lazy(() => import('./views/User/project/Project'))
 // Icons
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
 const routes = [
-  { path: '/', exact: true, name: '', element: Topic },
   { path: '/topic', name: 'Topic', element: Topic },
   { path: '/accountManager', name: 'AccountManager', element: AccountManager },
   { path: '/projectRegistered', name: 'ProjectRegistered', element: ProjectRegistered },
